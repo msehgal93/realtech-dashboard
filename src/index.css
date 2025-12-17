@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Warm Cream Background */
+    --background: 40 20% 96%;
+    --foreground: 216 60% 10%;
+
+    /* White Cards */
+    --card: 0 0% 100%;
+    --card-foreground: 216 60% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 216 60% 10%;
+
+    /* Electric Blue Primary */
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Soft Off-white Secondary */
+    --secondary: 60 5% 96%;
+    --secondary-foreground: 216 60% 10%;
+
+    --muted: 60 5% 90%;
+    --muted-foreground: 215 16% 47%;
+
+    --accent: 60 5% 90%;
+    --accent-foreground: 216 60% 10%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 217 91% 60%;
+
+    --radius: 0.75rem; /* 12px */
+    
+    --warning: 38 92% 50%;
+    --success: 160 84% 39%;
+  }
+
+  .dark {
+    /* Deep Navy Background */
+    --background: 216 60% 10%;
+    --foreground: 40 20% 96%;
+
+    /* Tinted Charcoal Cards */
+    --card: 215 32% 17%;
+    --card-foreground: 40 20% 96%;
+
+    --popover: 215 32% 17%;
+    --popover-foreground: 40 20% 96%;
+
+    /* Electric Blue Primary */
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 215 32% 25%;
+    --secondary-foreground: 40 20% 96%;
+
+    --muted: 215 32% 25%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 215 32% 25%;
+    --accent-foreground: 40 20% 96%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 215 32% 25%;
+    --input: 215 32% 25%;
+    --ring: 217 91% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+  }
+}

@@ -1,0 +1,184 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Enums
+enum Role {
+  ADMIN
+  MANAGER
+  SALES_REP
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  QUALIFIED
+  PROPOSAL
+  NEGOTIATION
+  CLOSED_WON
+  CLOSED_LOST
+}
+
+enum SlaStatus {
+  ON_TRACK
+  WARNING
+  BREACHED
+}
+
+enum Tone {
+  FRIENDLY
+  FORMAL
+  CASUAL
+}
+
+// Models
+
+model Tenant {
+  id          String   @id @default(uuid())
+  name        String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  users       User[]
+  leads       Lead[]
+  recordings  Recording[]
+  scripts     CallScript[]
+  templates   EmailTemplate[]
+  appointments Appointment[]
+  sessions    AutomationSession[]
+  usageLogs   UsageLog[]
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  name          String?
+  passwordHash  String
+  role          Role      @default(SALES_REP)
+  tenantId      String
+  tenant        Tenant    @relation(fields: [tenantId], references: [id])
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  leads         Lead[]    @relation("CreatedLeads")
+  appointments  Appointment[]
+}
+
+model Lead {
+  id            String      @id @default(uuid())
+  uniqueId      String      @unique // 6 digit ID
+  name          String
+  contact       String      // Email or Phone
+  status        LeadStatus  @default(NEW)
+  source        String?
+  dealValue     Float?
+  slaStatus     SlaStatus   @default(ON_TRACK)
+  notes         String?
+  
+  tenantId      String
+  tenant        Tenant      @relation(fields: [tenantId], references: [id])
+  
+  createdById   String
+  createdBy     User        @relation("CreatedLeads", fields: [createdById], references: [id])
+  
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  appointments  Appointment[]
+  recordings    Recording[]
+}
+
+model Appointment {
+  id          String   @id @default(uuid())
+  title       String
+  startTime   DateTime
+  endTime     DateTime
+  notes       String?
+  
+  leadId      String?
+  lead        Lead?    @relation(fields: [leadId], references: [id])
+  
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  
+  tenantId    String
+  tenant      Tenant   @relation(fields: [tenantId], references: [id])
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model CallScript {
+  id          String   @id @default(uuid())
+  name        String
+  category    String?
+  tags        String[]
+  body        String   // Rich text content
+  
+  tenantId    String
+  tenant      Tenant   @relation(fields: [tenantId], references: [id])
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model EmailTemplate {
+  id          String   @id @default(uuid())
+  name        String
+  subject     String?
+  body        String   // HTML content
+  tags        String[]
+  
+  tenantId    String
+  tenant      Tenant   @relation(fields: [tenantId], references: [id])
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Recording {
+  id          String   @id @default(uuid())
+  audioUrl    String
+  transcript  String?  @db.Text
+  duration    Int?     // in seconds
+  isDeleted   Boolean  @default(false) // For Recycle Bin
+  deletedAt   DateTime?
+  
+  leadId      String?
+  lead        Lead?    @relation(fields: [leadId], references: [id])
+  
+  tenantId    String
+  tenant      Tenant   @relation(fields: [tenantId], references: [id])
+  
+  createdAt   DateTime @default(now())
+}
+
+model AutomationSession {
+  id          String   @id @default(uuid())
+  startTime   DateTime @default(now())
+  endTime     DateTime?
+  tasksCompleted Int   @default(0)
+  status      String   // ACTIVE, COMPLETED, STOPPED
+  
+  tenantId    String
+  tenant      Tenant   @relation(fields: [tenantId], references: [id])
+}
+
+model UsageLog {
+  id          String   @id @default(uuid())
+  action      String   // e.g., "GENERATE_SCRIPT"
+  details     Json?
+  
+  tenantId    String
+  tenant      Tenant   @relation(fields: [tenantId], references: [id])
+  
+  createdAt   DateTime @default(now())
+}
