@@ -17,14 +17,14 @@ export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
         
         <div className="relative z-10">
           <div className="flex items-center gap-2 text-white mb-12">
-            <div className="h-8 w-8 bg-primary rounded-lg flex items-center justify-center">
-              <Building2 className="h-5 w-5 text-white" />
+            <div className="h-8 w-8 bg-white rounded-lg flex items-center justify-center">
+              <img src="/img/realtech-icon.png" className="h-7 w-7 object-contain" alt="RealTech CRM" />
             </div>
-            <span className="font-display font-bold text-xl tracking-tight">RealTech</span>
+            <span className="font-display font-bold text-xl tracking-tight">RealTech CRM</span>
           </div>
           
           <h1 className="font-display text-4xl font-bold text-white leading-tight max-w-md">
-            Manage your real estate pipeline with precision and AI.
+            Let AI Manage your leads with precision and you focus on closing deals.
           </h1>
         </div>
 
