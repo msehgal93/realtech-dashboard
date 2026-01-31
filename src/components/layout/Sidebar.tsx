@@ -24,16 +24,16 @@ export function Sidebar({ className }: SidebarProps) {
   const pathname = location.pathname;
 
   const sidebarItems = [
-    { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
-    { icon: Users, label: "Leads", href: "/dashboard/leads" },
-    { icon: Calendar, label: "Appointments", href: "/dashboard/appointments" },
-    { icon: FileText, label: "Call Scripts", href: "/dashboard/scripts" },
-    { icon: Mic, label: "Recordings", href: "/dashboard/recordings" },
-    { icon: Mail, label: "Email Templates", href: "/dashboard/email-templates" },
-    { icon: Zap, label: "Automation", href: "/dashboard/automation" },
-    { icon: Sparkles, label: "AI Tool", href: "/dashboard/ai-tool" },
-    { icon: Settings, label: "Settings", href: "/dashboard/settings" },
-    { icon: HelpCircle, label: "Support", href: "/dashboard/support" },
+    { icon: LayoutDashboard, label: "Home", href: "/home" },
+    { icon: Users, label: "Leads", href: "/leads" },
+    { icon: Calendar, label: "Appointments", href: "/appointments" },
+    { icon: FileText, label: "Call Scripts", href: "/scripts" },
+    { icon: Mic, label: "Recordings", href: "/recordings" },
+    { icon: Mail, label: "Email Templates", href: "/email-templates" },
+    { icon: Zap, label: "Automation", href: "/automation" },
+    { icon: Sparkles, label: "AI Tool", href: "/ai-tool" },
+    { icon: Settings, label: "Settings", href: "/settings" },
+    { icon: HelpCircle, label: "Support", href: "/support" },
   ];
 
   return (

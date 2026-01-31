@@ -19,28 +19,31 @@ export function Header() {
   const pageTitle = useMemo(() => {
     const path = location.pathname || "/";
 
-    if (path === "/" || path === "") {
+    const segments = path.split("/").filter(Boolean);
+
+    if (segments.length === 0) {
       return "Home";
     }
 
-    const segments = path.split("/").filter(Boolean);
-
-    if (segments[0] === "dashboard" && segments.length === 1) {
-      return "Dashboard";
-    }
-
-    const relevantSegments = segments[0] === "dashboard" ? segments.slice(1) : segments;
-
-    if (relevantSegments.length === 0) {
-      return "Dashboard";
-    }
+    const titleMap: Record<string, string> = {
+      home: "Home",
+      leads: "Leads",
+      appointments: "Appointments",
+      scripts: "Call Scripts",
+      recordings: "Recordings",
+      "email-templates": "Email Templates",
+      automation: "Automation",
+      "ai-tool": "AI Tool",
+      settings: "Settings",
+      support: "Support",
+      login: "Login",
+      signup: "Sign Up",
+    };
 
     const formatSegment = (segment: string) =>
-      segment
-        .replace(/[-_]/g, " ")
-        .replace(/\b\w/g, (char) => char.toUpperCase());
+      titleMap[segment] || segment.replace(/[-_]/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
 
-    return relevantSegments.map(formatSegment).join(" / ");
+    return segments.map(formatSegment).join(" / ");
   }, [location.pathname]);
 
   useEffect(() => {
