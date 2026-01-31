@@ -9,10 +9,39 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Moon, Sun, Bell } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 export function Header() {
   const [theme, setTheme] = useState<"light" | "dark">("light");
+  const location = useLocation();
+
+  const pageTitle = useMemo(() => {
+    const path = location.pathname || "/";
+
+    if (path === "/" || path === "") {
+      return "Home";
+    }
+
+    const segments = path.split("/").filter(Boolean);
+
+    if (segments[0] === "dashboard" && segments.length === 1) {
+      return "Dashboard";
+    }
+
+    const relevantSegments = segments[0] === "dashboard" ? segments.slice(1) : segments;
+
+    if (relevantSegments.length === 0) {
+      return "Dashboard";
+    }
+
+    const formatSegment = (segment: string) =>
+      segment
+        .replace(/[-_]/g, " ")
+        .replace(/\b\w/g, (char) => char.toUpperCase());
+
+    return relevantSegments.map(formatSegment).join(" / ");
+  }, [location.pathname]);
 
   useEffect(() => {
     const isDark = document.documentElement.classList.contains("dark");
@@ -33,7 +62,7 @@ export function Header() {
     <header className="sticky top-0 z-20 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between px-4">
         <div className="flex items-center gap-2">
-          <h1 className="text-lg font-semibold font-display">Dashboard</h1>
+          <h1 className="text-lg font-semibold font-display">{pageTitle}</h1>
         </div>
         <div className="flex items-center gap-4">
           <Button variant="ghost" size="icon" onClick={toggleTheme}>
